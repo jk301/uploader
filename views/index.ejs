@@ -2,6 +2,29 @@
 <html>
     <head></head>
     <body>
+
+        <% if (typeof alerts !== 'undefined' && alerts) { %>
+            <div class="alerts-container">
+                <ul>
+                    <% alerts.forEach ( alert  => { %>
+                        <li> <%= alert %> </li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <% if (typeof logged !== 'undefined' && logged) { %>
+            <p>you are logged!!!!</p>
+            <p>and user is <%= user.username %></p>
+            <form action="/logout" method="POST">
+                <button type="submit">Logout ?</button>
+            </form>
+        <% } else { %>
+            <p>you are not logged (sad)</p>
+            <a href="/register">register</a>
+            <a href="/login">Login</a>
+        <% } %>
+
         <h1>This is Home</h1>
     </body>
 </html>

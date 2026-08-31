@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="message.css">
+    </head>
+    <body>
+        <h1>User Registration</h1>
+
+        <% if (typeof alerts !== 'undefined' && alerts) { %>
+            <div class="alerts-container">
+                <ul>
+                    <% alerts.forEach ( alert  => { %>
+                        <li> <%= alert %> </li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+
+        <form action="/register" method="POST">
+            <label for="username">
+                Username : 
+                <input 
+                    type="text" 
+                    value="<%= typeof username !== 'undefined' ? username : '' %>" 
+                    name="username" 
+                    id="username" 
+                    placeholder="Username here" 
+                    required>
+            </label>
+            <label for="password">
+                Password : 
+                <input 
+                    type="text" 
+                    name="password" 
+                    placeholder="password here" 
+                    id="password" 
+                    required>
+            </label>
+            <label for="cnfrm-pass">
+                Confirm Password : 
+                <input 
+                    type="text" 
+                    name="cnfrm_pass" 
+                    placeholder="confirm password" 
+                    id="cnfrm-pass" 
+                    required>
+            </label>
+            <button type="submit">Submit</button>
+        </form>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
+    </body>
+</html>
