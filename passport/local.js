@@ -3,16 +3,19 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const utils = require('../lib/utils')
+const { prisma } = require('../lib/prisma.js')
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {
-        // const user = find user by username
-        // if (!user) return done(null, false)
+        const user = await prisma.user.findUnique({
+            where: { username: username }
+        })
+        if (!user) return done(null, false)
 
-        // const valid = utils.passValid(password, hashed)
-        // if (!valid) return done(null, false)
+        const valid = await utils.passValid(password, user.hash)
+        if (!valid) return done(null, false)
 
-        // return done(null, user)
+        return done(null, user)
 
     })
 )
@@ -23,8 +26,10 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        // const user = try fetching the user by id
-        // done(null, user)
+        const user = await prisma.user.findUnique({
+            where: { id: id}
+        })
+        done(null, user)
     } catch (error) {
         done(error)
     }
