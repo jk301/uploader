@@ -1,6 +1,9 @@
 // app.js
 
 const express = require('express')
+const session = require('express-session')
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store')
+const passport = require('passport')
 const path = require('path')
 
 require('dotenv').config()
@@ -12,6 +15,19 @@ app.set('view engine', 'ejs')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+// app.use(session({
+//     store: new PrismaSessionStore(),
+//     secret: process.env.SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: { maxAge: 24 * 60 * 60 * 1000 }
+// }))
+
+// require('./passport/local')
+
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 const indexRouter = require('./routes/indexRouter')
 app.use('/', indexRouter)
