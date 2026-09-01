@@ -25,6 +25,11 @@ function getProtected (req, res) {
     return res.render('protected')
 }
 
+function getUpload (req, res) {
+    return res.render('upload')
+}
+
+
 async function postRegister (req, res) {
     const password = req.body.password
     const cnfrm_pass = req.body.cnfrm_pass
@@ -94,13 +99,20 @@ function postLogout (req, res) {
     })
 }
 
+function postUpload (req, res) {
+    console.log(req)
+    return res.redirect('/')
+}
+
 
 module.exports = {
     getMain,
     getRegister,
     getLogin,
     getProtected,
+    getUpload,
     postRegister,
     postLogin,
-    postLogout
+    postLogout,
+    postUpload
 }
