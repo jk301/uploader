@@ -16,6 +16,7 @@
         <% if (typeof logged !== 'undefined' && logged) { %>
             <p>you are logged!!!!</p>
             <p>and user is <%= user.username %></p>
+            <a href="/upload">upload file</a>
             <form action="/logout" method="POST">
                 <button type="submit">Logout ?</button>
             </form>

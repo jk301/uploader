@@ -6,6 +6,20 @@ const passport = require('passport')
 const optAuth = require('../mid/optAuth.js')
 const indexRouter = Router()
 
+// Multer impl
+
+const multer = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
+
 indexRouter.get('/', indexController.getMain)
 indexRouter.get('/register', indexController.getRegister)
 indexRouter.get('/login', indexController.getLogin)
@@ -21,6 +35,6 @@ indexRouter.post('/login', passport.authenticate('local'), indexController.postL
 indexRouter.post('/logout', indexController.postLogout)
 
 // protect route
-indexRouter.post('/upload', indexController.postUpload)
+indexRouter.post('/upload',optAuth.optAuth, upload.single('file') ,indexController.postUpload)
 
 module.exports = indexRouter

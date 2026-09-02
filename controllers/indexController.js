@@ -100,7 +100,7 @@ function postLogout (req, res) {
 }
 
 function postUpload (req, res) {
-    console.log(req)
+    console.log(req.file)
     return res.redirect('/')
 }
 
