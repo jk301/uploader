@@ -45,4 +45,6 @@ indexRouter.post('/folder', optAuth.optAuth, indexController.postFolder)
 
 indexRouter.post('/folder/delete/:id', optAuth.optAuth, indexController.deleteFolder)
 
+indexRouter.post('/folder/:id/delete', optAuth.optAuth, indexController.deleteFile)
+
 module.exports = indexRouter

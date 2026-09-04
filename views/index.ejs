@@ -30,7 +30,7 @@
                             <%= folder.name %>
 
                             <a href="/upload?folderId=<%= folder.id %>">upload file</a>
-                                
+
                             <form action="/folder/delete/<%= folder.id %>" method="post">
                                 <button type="submit">delete folder</button>
                             </form>
@@ -39,7 +39,7 @@
                                 <% folder.file.forEach(file => { %>
                                     <div class="file">
                                         <%= file.name %>
-                                        <form action="/file/delete/<%= file.id %>" method="post">
+                                        <form action="/folder/<%= file.id %>/delete" method="post">
                                             <button type="submit">delete file</button>
                                         </form>
                                     </div>

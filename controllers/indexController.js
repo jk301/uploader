@@ -183,6 +183,36 @@ async function deleteFolder (req, res) {
     res.redirect('/')
 }
 
+async function deleteFile (req, res) {
+    const fileId = Number(req.params.id)
+    const userId = req.user.id
+
+    const file = await prisma.file.findUnique({
+        where: { id: fileId }
+    })
+
+    if ( !file || file.userId !== userId) {
+        console.log(file)
+        return res.redirect('/')
+    }
+
+    const { error } = await supabase.storage
+        .from('files')
+        .remove([file.link])
+
+    if (error) {
+        console.error(error)
+        return res.redirect('/')
+    }
+
+    const result = await prisma.file.delete({
+        where: { id: fileId }
+    })
+
+    res.redirect('/')
+
+}
+
 
 module.exports = {
     getMain,
@@ -196,5 +226,6 @@ module.exports = {
     postLogout,
     postUpload,
     postFolder,
-    deleteFolder
+    deleteFolder,
+    deleteFile
 }
