@@ -9,16 +9,20 @@ const indexRouter = Router()
 // Multer impl
 
 const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname)
-  }
-})
 
-const upload = multer({ storage: storage })
+// Local (uploads/)
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads/')
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname)
+//   }
+// })
+// const upload = multer({ storage: storage })
+
+const upload = multer({ storage: multer.memoryStorage() })
+
 
 indexRouter.get('/', indexController.getMain)
 indexRouter.get('/register', indexController.getRegister)

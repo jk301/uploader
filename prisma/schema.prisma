@@ -12,10 +12,14 @@ datasource db {
   provider = "postgresql"
 }
 
+// Models
+
 model User { 
   id    Int     @id @default(autoincrement()) 
   username String  @unique
   hash  String?
+  folder Folder[]
+  file File[]
 } 
 
 model Session {
@@ -23,4 +27,26 @@ model Session {
   sid       String   @unique
   data      String
   expiresAt DateTime
+}
+
+model Folder {
+  id  Int @id @default(autoincrement()) 
+  name String 
+  userId Int 
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  file File[]
+}
+
+model File {
+  id Int @id @default(autoincrement())
+  name String
+  sizeBytes Int
+  mimeType String
+  link String 
+  folderId Int
+  folder Folder @relation(fields: [folderId], references: [id])
+  userId Int 
+  user User @relation(fields: [userId], references: [id])
+  addedAt DateTime @default(now())
 }

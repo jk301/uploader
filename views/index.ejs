@@ -20,6 +20,19 @@
             <form action="/logout" method="POST">
                 <button type="submit">Logout ?</button>
             </form>
+
+            <div class="folder-container">
+                <% if (typeof folders !== 'undefined' && folders) { %>
+                    <% folders.forEach(folder => { %>
+                        <div>
+                            <%= folder.name %> 
+                            <!-- or something  -->
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+            
+
         <% } else { %>
             <p>you are not logged (sad)</p>
             <a href="/register">register</a>

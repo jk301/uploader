@@ -3,6 +3,15 @@
 const { prisma } = require('../lib/prisma.js')
 const utils = require('../lib/utils.js')
 
+require('dotenv').config()
+
+const { createClient } = require('@supabase/supabase-js')
+
+const supabase = createClient(
+    process.env.SB_URL, 
+    process.env.SB_SECRET 
+)
+
 async function getMain(req, res) {
     // for testing
     const user = req.user
@@ -99,8 +108,33 @@ function postLogout (req, res) {
     })
 }
 
-function postUpload (req, res) {
-    console.log(req.file)
+async function postUpload (req, res) {
+    const file = req.file   
+    const userId = req.user.id
+    const folderId = req.body.folderId
+
+    const storagePath = `${userId}/${Date.now()}-${file.originalname}`
+
+    const { data, error } = await supabase.storage
+    .from('files')
+    .upload(storagePath, file.buffer, { contentType: file.mimetype })
+
+    if (error) {
+        console.error(error)
+        return res.redirect('/')
+    }
+
+    const result = await prisma.file.create({
+        data: {
+            name: file.originalname, 
+            sizeBytes: file.size, 
+            mimeType: file.mimetype, 
+            link: data.path, 
+            folderId: Number(folderId), 
+            userId: userId
+        }
+    })
+
     return res.redirect('/')
 }
 
