@@ -16,7 +16,11 @@ async function getMain(req, res) {
     // for testing
     const user = req.user
     if (user) {
-        return res.render('index', { logged: true, user: user})
+        const folders = await prisma.folder.findMany({
+            where: { userId: user.id },
+            include: { file: true }
+        })
+        return res.render('index', { logged: true, user: user, folders: folders})
     } else {
         return res.render('index')
     }
@@ -35,7 +39,12 @@ function getProtected (req, res) {
 }
 
 function getUpload (req, res) {
-    return res.render('upload')
+    console.log('this is folderId: ' + req.query.folderId)
+    return res.render('upload', { folderId: req.query.folderId })
+}
+
+function getFolder (req, res) {
+    return res.render('folder')
 }
 
 
@@ -111,7 +120,9 @@ function postLogout (req, res) {
 async function postUpload (req, res) {
     const file = req.file   
     const userId = req.user.id
-    const folderId = req.body.folderId
+    const folderId = Number(req.body.folderId)
+
+    console.log('folderId received:', req.body.folderId, '-> parsed:', folderId)
 
     const storagePath = `${userId}/${Date.now()}-${file.originalname}`
 
@@ -130,12 +141,46 @@ async function postUpload (req, res) {
             sizeBytes: file.size, 
             mimeType: file.mimetype, 
             link: data.path, 
-            folderId: Number(folderId), 
+            folderId: folderId, 
             userId: userId
         }
     })
 
     return res.redirect('/')
+}
+
+async function postFolder (req, res) {
+    const folderName = req.body.folderName
+    const userId = req.user.id
+
+    const result = await prisma.folder.create({
+        data: {
+            name: folderName, 
+            userId: userId
+        }
+    })
+
+    res.redirect('/')
+}
+
+async function deleteFolder (req, res) {
+    const folderId = Number(req.params.id)
+    const userId = req.user.id
+
+    const folder = await prisma.folder.findUnique({
+        where: { id: folderId }
+    })
+    
+    if ( !folder || folder.userId !== userId) {
+        console.log(folder)
+        return res.redirect('/')
+    }
+
+    const result = await prisma.folder.delete({
+        where: { id: folderId }
+    })
+
+    res.redirect('/')
 }
 
 
@@ -145,8 +190,11 @@ module.exports = {
     getLogin,
     getProtected,
     getUpload,
+    getFolder,
     postRegister,
     postLogin,
     postLogout,
-    postUpload
+    postUpload,
+    postFolder,
+    deleteFolder
 }

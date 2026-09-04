@@ -16,6 +16,7 @@
         <% if (typeof logged !== 'undefined' && logged) { %>
             <p>you are logged!!!!</p>
             <p>and user is <%= user.username %></p>
+            <a href="/folder">Create a folder</a>
             <a href="/upload">upload file</a>
             <form action="/logout" method="POST">
                 <button type="submit">Logout ?</button>
@@ -24,9 +25,26 @@
             <div class="folder-container">
                 <% if (typeof folders !== 'undefined' && folders) { %>
                     <% folders.forEach(folder => { %>
-                        <div>
-                            <%= folder.name %> 
-                            <!-- or something  -->
+                        <div class="folder">
+
+                            <%= folder.name %>
+
+                            <a href="/upload?folderId=<%= folder.id %>">upload file</a>
+                                
+                            <form action="/folder/delete/<%= folder.id %>" method="post">
+                                <button type="submit">delete folder</button>
+                            </form>
+
+                            <div class="file-container">
+                                <% folder.file.forEach(file => { %>
+                                    <div class="file">
+                                        <%= file.name %>
+                                        <form action="/file/delete/<%= file.id %>" method="post">
+                                            <button type="submit">delete file</button>
+                                        </form>
+                                    </div>
+                                <% }) %>
+                            </div>
                         </div>
                     <% }) %>
                 <% } %>

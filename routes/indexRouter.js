@@ -27,6 +27,7 @@ const upload = multer({ storage: multer.memoryStorage() })
 indexRouter.get('/', indexController.getMain)
 indexRouter.get('/register', indexController.getRegister)
 indexRouter.get('/login', indexController.getLogin)
+indexRouter.get('/folder', optAuth.optAuth, indexController.getFolder)
 
 // protect route
 indexRouter.get('/upload', optAuth.optAuth , indexController.getUpload)
@@ -40,5 +41,8 @@ indexRouter.post('/logout', indexController.postLogout)
 
 // protect route
 indexRouter.post('/upload',optAuth.optAuth, upload.single('file') ,indexController.postUpload)
+indexRouter.post('/folder', optAuth.optAuth, indexController.postFolder)
+
+indexRouter.post('/folder/delete/:id', optAuth.optAuth, indexController.deleteFolder)
 
 module.exports = indexRouter
