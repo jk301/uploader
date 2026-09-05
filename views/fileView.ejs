@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div class="file-view">
+            <h2>File name: <%= file.name %></h2>
+            <h2>File type: <%= file.mimeType %></h2>
+            <h2>Uploaded at: <%= file.addedAt %></h2>
+            <a href="/file/download/<%= file.id %>">
+                <button>Download</button>
+            </a>
+            <a href="/">go home</a>
+        </div>
+    </body>
+</html>

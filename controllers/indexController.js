@@ -2,6 +2,7 @@
 
 const { prisma } = require('../lib/prisma.js')
 const utils = require('../lib/utils.js')
+const dayJs = require('dayjs')
 
 require('dotenv').config()
 
@@ -45,6 +46,49 @@ function getUpload (req, res) {
 
 function getFolder (req, res) {
     return res.render('folder')
+}
+
+async function getFileView (req, res) {
+    const fileId = Number(req.params.id)
+    const userId = req.user.id
+    
+    const file = await prisma.file.findUnique({
+        where: { id: fileId }
+    }) 
+
+    if (!file || file.userId !== userId) {
+        // delete before deployment
+        console.log(`file: ${file}`)
+        return res.redirect('/')
+    }
+
+    const newTime = dayJs(file.addedAt).format('MMM D, YYYY [at] h:mm A')
+    file.addedAt = newTime
+
+    return res.render('fileView', { file: file })
+}
+
+async function getDownloadUrl (req, res) {
+    const fileId = Number(req.params.id)
+    const userId = req.user.id
+
+    const file = await prisma.file.findUnique({
+        where: { id: fileId }
+    }) 
+
+    if (!file || file.userId !== userId) return res.redirect('/')
+
+    const { data, error } = await supabase.storage
+        .from('files')
+        .createSignedUrl(file.link, 60, { download: file.name })
+
+    if (error) {
+        console.error(error)
+        return res.redirect('/')
+    }
+
+    res.redirect(data.signedUrl)
+
 }
 
 
@@ -168,17 +212,26 @@ async function deleteFolder (req, res) {
     const userId = req.user.id
 
     const folder = await prisma.folder.findUnique({
-        where: { id: folderId }
+        where: { id: folderId }, 
+        include: { file: true }
     })
     
     if ( !folder || folder.userId !== userId) {
         console.log(folder)
         return res.redirect('/')
     }
+    
+    if (folder.file.length > 0) {
+        const filePaths = folder.file.map( file => file.link)
+        const { error } = await supabase.storage.from("files").remove(filePaths)
+        if (error) {
+            console.error(error)
+            return res.redirect('/')
+        }
+    }
 
-    const result = await prisma.folder.delete({
-        where: { id: folderId }
-    })
+    await prisma.file.deleteMany({ where: { folderId: folderId } })
+    await prisma.folder.delete({ where: { id: folderId } })
 
     res.redirect('/')
 }
@@ -221,6 +274,8 @@ module.exports = {
     getProtected,
     getUpload,
     getFolder,
+    getFileView,
+    getDownloadUrl,
     postRegister,
     postLogin,
     postLogout,

@@ -17,7 +17,6 @@
             <p>you are logged!!!!</p>
             <p>and user is <%= user.username %></p>
             <a href="/folder">Create a folder</a>
-            <a href="/upload">upload file</a>
             <form action="/logout" method="POST">
                 <button type="submit">Logout ?</button>
             </form>
@@ -29,6 +28,8 @@
 
                             <%= folder.name %>
 
+                            <a href="/rename?folderId<%= folder.id %>">rename folder</a>
+
                             <a href="/upload?folderId=<%= folder.id %>">upload file</a>
 
                             <form action="/folder/delete/<%= folder.id %>" method="post">
@@ -39,6 +40,11 @@
                                 <% folder.file.forEach(file => { %>
                                     <div class="file">
                                         <%= file.name %>
+
+                                        <form action="/view/file/<%= file.id %>" method="get">
+                                            <button type="submit">view details</button>
+                                        </form>
+                                        
                                         <form action="/folder/<%= file.id %>/delete" method="post">
                                             <button type="submit">delete file</button>
                                         </form>
