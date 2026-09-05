@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <h1>Rename folder (protected)</h1>
+        <p>Folder name was: <%= folder.name %></p>
+        <form action="/rename" method="post">
+            <input type="text" name="newName" required >
+            <input type="hidden" name="folderId" value="<%= folder.id %>">
+            <button type="submit">Submit Name</button>
+        </form>
+    </body>
+</html>

@@ -40,8 +40,23 @@ function getProtected (req, res) {
 }
 
 function getUpload (req, res) {
-    console.log('this is folderId: ' + req.query.folderId)
+    // console.log('this is folderId: ' + req.query.folderId)
     return res.render('upload', { folderId: req.query.folderId })
+}
+
+async function getFolderRename (req, res) {
+    const folderId = Number(req.query.folderId)
+
+    const folder = await prisma.folder.findUnique({
+        where: { id: folderId }
+    })
+
+    if (!folder || folder.userId !== req.user.id) {
+        return res.redirect('/')
+    }
+
+
+    return res.render('renameFolder', { folder: folder })
 }
 
 function getFolder (req, res) {
@@ -193,6 +208,32 @@ async function postUpload (req, res) {
     return res.redirect('/')
 }
 
+async function postRenameFolder (req, res) {
+    const folderName = req.body.newName 
+    const userId = req.user.id
+    const folderId = Number(req.body.folderId)
+
+    const folder = await prisma.folder.findUnique({
+        where: { id: folderId }
+    })
+
+    if (!folder || folder.userId !== userId) {
+        console.log("user mismatch or folder doesn't exist")
+        return res.redirect('/')
+    }
+
+    if (folder.name === folderName)  {
+        return res.redirect('/')
+    } else {
+        await prisma.folder.update({
+            data: { name: folderName }, 
+            where: { id: folderId }
+        })
+        return res.redirect('/')
+    }
+
+}
+
 async function postFolder (req, res) {
     const folderName = req.body.folderName
     const userId = req.user.id
@@ -276,11 +317,14 @@ module.exports = {
     getFolder,
     getFileView,
     getDownloadUrl,
+    getFolderRename,
+
     postRegister,
     postLogin,
     postLogout,
     postUpload,
     postFolder,
     deleteFolder,
-    deleteFile
+    postRenameFolder,
+    deleteFile,
 }

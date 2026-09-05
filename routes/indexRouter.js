@@ -31,6 +31,7 @@ indexRouter.get('/folder', optAuth.optAuth, indexController.getFolder)
 
 // protect route
 indexRouter.get('/upload', optAuth.optAuth , indexController.getUpload)
+indexRouter.get('/rename', optAuth.optAuth , indexController.getFolderRename)
 indexRouter.get('/view/file/:id', optAuth.optAuth, indexController.getFileView)
 indexRouter.get('/file/download/:id', optAuth.optAuth, indexController.getDownloadUrl)
 
@@ -39,7 +40,8 @@ indexRouter.post('/login', passport.authenticate('local'), indexController.postL
 indexRouter.post('/logout', indexController.postLogout)
 
 // protect route
-indexRouter.post('/upload',optAuth.optAuth, upload.single('file') ,indexController.postUpload)
+indexRouter.post('/upload', optAuth.optAuth, upload.single('file') ,indexController.postUpload)
+indexRouter.post('/rename', optAuth.optAuth, indexController.postRenameFolder)
 indexRouter.post('/folder', optAuth.optAuth, indexController.postFolder)
 indexRouter.post('/folder/delete/:id', optAuth.optAuth, indexController.deleteFolder)
 indexRouter.post('/folder/:id/delete', optAuth.optAuth, indexController.deleteFile)
