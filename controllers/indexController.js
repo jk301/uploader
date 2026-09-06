@@ -248,6 +248,49 @@ async function postFolder (req, res) {
     res.redirect('/')
 }
 
+async function postCreateFolderShare (req, res) {
+    const folderId = Number(req.body.folderId)
+    const userId = req.user.id
+
+    const folder = await prisma.folder.findUnique( { where: { id: folderId} } )
+    if (!folder || folder.userId !== userId) return res.redirect('/')
+
+    const share = await prisma.folderShare.create({
+        data: {
+            folderId: folderId,
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 1) // 1h
+        }
+    })
+
+    res.redirect(`/share/${share.id}`)
+}
+
+async function getFolderShare (req, res) {
+    const token = req.params.token
+
+    const share = await prisma.folderShare.findUnique({
+        where: { id: token },
+        include: { folder: { include: { file: true } } }
+    })
+
+    if (!share || share.expiresAt < new Date()) {
+        console.log('Link expired or not found')
+        await prisma.folderShare.delete({ where: {id: token}})
+        return res.redirect('/')
+    }
+
+    const filesWithUrls = await Promise.all(
+        share.folder.file.map(async (file) => {
+            const { data } = await supabase.storage
+                .from('files')
+                .createSignedUrl(file.link, 60 * 5, { download: file.name })
+            return { name: file.name, url: data?.signedUrl }
+        })
+    )
+
+    res.render('folderShare', { folderName: share.folder.name, files: filesWithUrls })
+}
+
 async function deleteFolder (req, res) {
     const folderId = Number(req.params.id)
     const userId = req.user.id
@@ -318,6 +361,7 @@ module.exports = {
     getFileView,
     getDownloadUrl,
     getFolderRename,
+    getFolderShare,
 
     postRegister,
     postLogin,
@@ -326,5 +370,6 @@ module.exports = {
     postFolder,
     deleteFolder,
     postRenameFolder,
+    postCreateFolderShare,
     deleteFile,
 }

@@ -30,6 +30,11 @@
 
                             <a href="/rename?folderId=<%= folder.id %>">rename folder</a>
 
+                            <form action="/folder/share" method="post">
+                                <input type="hidden" name="folderId" value="<%= folder.id %>">
+                                <button>Share folder (public)</button>
+                            </form>
+
                             <a href="/upload?folderId=<%= folder.id %>">upload file</a>
 
                             <form action="/folder/delete/<%= folder.id %>" method="post">

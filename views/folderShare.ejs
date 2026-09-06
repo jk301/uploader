@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div class="folder-view">
+            <h1>Folder name: <%= folderName %></h1>
+            <p>!share the url above</p>
+            <% if (typeof files !== 'undefined' || files) { %>
+                <% files.forEach( file => { %>
+                    <div>
+                        <h3>File Name: <%= file.name %></h3>
+                        <a href="<%= file.url %>">download</a>
+                    </div>
+                <% }) %>
+            <% } %>
+            <a href="/">go home</a>
+        </div>
+    </body>
+</html>

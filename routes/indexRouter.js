@@ -46,4 +46,7 @@ indexRouter.post('/folder', optAuth.optAuth, indexController.postFolder)
 indexRouter.post('/folder/delete/:id', optAuth.optAuth, indexController.deleteFolder)
 indexRouter.post('/folder/:id/delete', optAuth.optAuth, indexController.deleteFile)
 
+indexRouter.post('/folder/share', optAuth.optAuth, indexController.postCreateFolderShare)
+indexRouter.get('/share/:token', indexController.getFolderShare) // no optAuth — public
+
 module.exports = indexRouter

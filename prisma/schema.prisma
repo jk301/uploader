@@ -36,6 +36,15 @@ model Folder {
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   file File[]
+  folderShare FolderShare[]
+}
+
+model FolderShare {
+  id        String   @id @default(cuid())
+  folderId  Int
+  folder    Folder   @relation(fields: [folderId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model File {
