@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="index.css">
+    </head>
     <body>
+        <%- include('./partials/navbar') %>
 
         <% if (typeof alerts !== 'undefined' && alerts) { %>
             <div class="alerts-container">
@@ -14,60 +17,67 @@
         <% } %>
 
         <% if (typeof logged !== 'undefined' && logged) { %>
-            <p>you are logged!!!!</p>
-            <p>and user is <%= user.username %></p>
-            <a href="/folder">Create a folder</a>
-            <form action="/logout" method="POST">
-                <button type="submit">Logout ?</button>
-            </form>
-
             <div class="folder-container">
-                <% if (typeof folders !== 'undefined' && folders) { %>
+                <% if (typeof folders !== 'undefined' && folders.length > 0) { %>
                     <% folders.forEach(folder => { %>
                         <div class="folder">
+                            <div class="folder-details">
 
-                            <%= folder.name %>
+                                <h3><%= folder.name %></h3>
 
-                            <a href="/rename?folderId=<%= folder.id %>">rename folder</a>
+                                <div class="folder-buttons">
+                                    <a href="/rename?folderId=<%= folder.id %>">
+                                        <button>Rename folder</button>
+                                    </a>
+                                    <form action="/folder/share" method="post">
+                                        <input type="hidden" name="folderId" value="<%= folder.id %>">
+                                        <button>Share folder</button>
+                                    </form>
+                                    <a href="/upload?folderId=<%= folder.id %>">
+                                        <button>Upload file</button>
+                                    </a>
+                                    <form action="/folder/delete/<%= folder.id %>" method="post">
+                                        <button id="delete-button" type="submit">delete folder</button>
+                                    </form>
+                                </div>
 
-                            <form action="/folder/share" method="post">
-                                <input type="hidden" name="folderId" value="<%= folder.id %>">
-                                <button>Share folder (public)</button>
-                            </form>
-
-                            <a href="/upload?folderId=<%= folder.id %>">upload file</a>
-
-                            <form action="/folder/delete/<%= folder.id %>" method="post">
-                                <button type="submit">delete folder</button>
-                            </form>
+                            </div>
+                
 
                             <div class="file-container">
                                 <% folder.file.forEach(file => { %>
                                     <div class="file">
                                         <%= file.name %>
 
-                                        <form action="/view/file/<%= file.id %>" method="get">
-                                            <button type="submit">view details</button>
-                                        </form>
+                                        <div class="file-button">
+                                            <form action="/view/file/<%= file.id %>" method="get">
+                                                <button type="submit">view details</button>
+                                            </form>
+                                            
+                                            <form action="/folder/<%= file.id %>/delete" method="post">
+                                                <button id="delete-button" type="submit">delete file</button>
+                                            </form>
+                                        </div>
                                         
-                                        <form action="/folder/<%= file.id %>/delete" method="post">
-                                            <button type="submit">delete file</button>
-                                        </form>
                                     </div>
                                 <% }) %>
                             </div>
+
                         </div>
                     <% }) %>
+                <% } else if (folders.length === 0) { %>
+                    <div class="folder-empty">
+                        <h2>You don't have any folders!</h2>
+                        <p>ps. you gotta create folders to upload files in em.</p>
+                    </div>
                 <% } %>
-            </div>
-            
-
+            </div>  
         <% } else { %>
-            <p>you are not logged (sad)</p>
-            <a href="/register">register</a>
-            <a href="/login">Login</a>
+            <div class="no-login">
+                <h2>Hey you wanna upload some files and see/download them ?</h2>
+                <h2>Then register yourself and login </h2>
+            </div>
         <% } %>
 
-        <h1>This is Home</h1>
     </body>
 </html>

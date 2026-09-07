@@ -1,0 +1,132 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    
+    font-family: 'Courier New', Courier, monospace;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #EAE2D6;
+}
+
+.no-login, .folder-empty {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.folder-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+
+    width: 60%;
+}
+
+
+.folder {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #F7F2EB;
+    border: 1px solid #8B9A6E;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.folder-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #8B9A6E;
+}
+
+.folder-details > h3 {
+    margin: 0;
+    margin-right: auto;
+    font-size: 1.8rem;
+    margin-right: 30px;
+}
+
+.folder-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.folder-buttons > a,
+.folder-buttons > form {
+    text-decoration: none;
+    margin: 0;
+    display: flex;
+}
+
+.folder-buttons button {
+    width: 100%;
+}
+
+.folder-buttons button {
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    background-color: #F7F2EB;
+    border: 1px solid #C9C2B4;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.folder-buttons button:hover {
+    background-color: #EDE6D8;
+}
+
+.file-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 8px 12px;
+    
+    border: 1px solid #8B9A6E;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.file-button  {
+    display: flex;
+    gap: 20px;
+}
+
+.file-button > form > button {
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    background-color: transparent;
+    border: 1px solid #C9C2B4;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-button > form >button:hover {
+    background-color: #EDE6D8;
+}
+#delete-button:hover {
+    color: white;
+    background-color: rgb(214, 46, 46);
+}

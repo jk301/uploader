@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="navbar.css">
+    </head>
+    <nav>
+        <h1>Uploader</h1>
+        <% if (typeof logged !== 'undefined' && logged) { %>
+            <div class="user-details">
+                <h3>Welcome! <%= user.username %></h3>
+            </div>
+            <div class="nav-buttons">
+                <a href="/folder">
+                    <button>Create a folder</button>
+                </a>
+                <form action="/logout" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+            <% } else  { %>
+                <div class="nav-buttons">
+                    <a href="/register">
+                        <button>Register!</button>
+                    </a>
+                    <a href="/login">
+                        <button>Login</button>
+                    </a>
+                </div>     
+        <% } %>
+    </nav>
+</html>
