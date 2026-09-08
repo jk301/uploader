@@ -10,10 +10,12 @@ passport.use(
         const user = await prisma.user.findUnique({
             where: { username: username }
         })
-        if (!user) return done(null, false)
+        if (!user) {
+            return done(null, false, { msg: "User doesn't exist.", uname: username })
+        }
 
         const valid = await utils.passValid(password, user.hash)
-        if (!valid) return done(null, false)
+        if (!valid) return done(null, false, { msg: "Password is incorrect.", uname: username })
 
         return done(null, user)
 

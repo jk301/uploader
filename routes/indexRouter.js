@@ -36,7 +36,8 @@ indexRouter.get('/view/file/:id', optAuth.optAuth, indexController.getFileView)
 indexRouter.get('/file/download/:id', optAuth.optAuth, indexController.getDownloadUrl)
 
 indexRouter.post('/register', indexController.postRegister)
-indexRouter.post('/login', passport.authenticate('local'), indexController.postLogin)
+// indexRouter.post('/login', passport.authenticate('local'), indexController.postLogin)
+indexRouter.post('/login', optAuth.customLoginHandler, indexController.postLogin)
 indexRouter.post('/logout', indexController.postLogout)
 
 // protect route
