@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="register.css">
+    </head>
     <body>
-        <h1>This is upload page (protected)</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
+        <h1 id="head">Upload file</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data" class="input-form">
             <input type="file" name="file" required >
             <input type="hidden" name="folderId" value="<%= folderId %>">
             <button type="submit">Submit file </button>
         </form>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
     </body>
 </html>

@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="register.css">
+    </head>
     <body>
-        <h1>Rename folder (protected)</h1>
-        <p>Folder name was: <%= folder.name %></p>
-        <form action="/rename" method="post">
+        <h1 id="head">Rename folder</h1>
+        <h3>Folder name (currently): <%= folder.name %></h3>
+        <form action="/rename" method="post" class="input-form">
             <input type="text" name="newName" required >
             <input type="hidden" name="folderId" value="<%= folder.id %>">
             <button type="submit">Submit Name</button>
         </form>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
     </body>
 </html>

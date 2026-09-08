@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="register.css">
+    </head>
     <body>
-        <h1>This is folder page (protected)</h1>
-        <form action="/folder" method="post">
+        <h1 id="head">Create a folder</h1>
+        <form action="/folder" method="post" class="input-form">
             <input type="text" name="folderName" placeholder="ex: projects" required >
             <button type="submit">Submit folder name </button>
         </form>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
     </body>
 </html>
