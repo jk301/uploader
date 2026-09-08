@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="message.css">
+        <link rel="stylesheet" href="register.css">
     </head>
     <body>
-        <h1>This is login</h1>
+        <h1 id="head">Login</h1>
 
         <% if (typeof alerts !== 'undefined' && alerts) { %>
             <div class="alerts-container">
@@ -16,7 +16,7 @@
             </div>
         <% } %>
 
-        <form action="/login" method="POST">
+        <form action="/login" method="POST" class="input-form">
             <label for="username">
                 Username
                 <input 

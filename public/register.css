@@ -46,7 +46,7 @@ body {
 .input-form > label > input {
     font-family: inherit;
     padding: 20px;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .input-form > button, a > button {
