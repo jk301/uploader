@@ -1,0 +1,75 @@
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+
+    font-family: 'Courier New', Courier, monospace;
+
+    background-color: #EAE2D6;
+}
+
+.alerts-container {
+    font-size: 20px;
+}
+
+#head {
+    display: flex;
+    justify-content: center;
+    background-color: #8B9A6E;
+    width: 100%;
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+
+    width: 35%;
+
+    padding: 30px;
+    gap: 20px;
+
+    border: 2px #8B9A6E solid;
+}
+.input-form > label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.input-form > label > input {
+    font-family: inherit;
+    padding: 20px;
+    font-size: 20px;
+}
+
+.input-form > button, a > button {
+    color: black;
+    text-decoration: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 20px;
+    width: 100%;
+}
+
+.input-form > button {
+    font-size: 25px;
+}
+
+a > button {
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.input-form > button:hover, a > button:hover {
+    color: white;
+    background-color: #95a575;
+}
+

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="message.css">
+        <link rel="stylesheet" href="register.css">
     </head>
     <body>
-        <h1>User Registration</h1>
+        <h1 id="head">User Registration</h1>
 
         <% if (typeof alerts !== 'undefined' && alerts) { %>
             <div class="alerts-container">
@@ -16,7 +16,7 @@
             </div>
         <% } %>
 
-        <form action="/register" method="POST">
+        <form action="/register" method="POST" class="input-form">
             <label for="username">
                 Username : 
                 <input 
@@ -30,7 +30,7 @@
             <label for="password">
                 Password : 
                 <input 
-                    type="text" 
+                    type="password" 
                     name="password" 
                     placeholder="password here" 
                     id="password" 
@@ -39,7 +39,7 @@
             <label for="cnfrm-pass">
                 Confirm Password : 
                 <input 
-                    type="text" 
+                    type="password" 
                     name="cnfrm_pass" 
                     placeholder="confirm password" 
                     id="cnfrm-pass" 
