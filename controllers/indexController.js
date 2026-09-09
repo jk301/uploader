@@ -40,7 +40,6 @@ function getProtected (req, res) {
 }
 
 function getUpload (req, res) {
-    // console.log('this is folderId: ' + req.query.folderId)
     return res.render('upload', { folderId: req.query.folderId })
 }
 
@@ -267,6 +266,7 @@ async function postCreateFolderShare (req, res) {
 
 async function getFolderShare (req, res) {
     const token = req.params.token
+    const user = req.user
 
     const share = await prisma.folderShare.findUnique({
         where: { id: token },
@@ -274,9 +274,24 @@ async function getFolderShare (req, res) {
     })
 
     if (!share || share.expiresAt < new Date()) {
-        console.log('Link expired or not found')
-        await prisma.folderShare.delete({ where: {id: token}})
-        return res.redirect('/')
+        if (share) await prisma.folderShare.delete({ where: { id: token } })
+
+        const alerts = [!share ? "Folder not found" : "Folder link expired"]
+
+        if (user) {
+            const folders = await prisma.folder.findMany({
+                where: { userId: user.id },
+                include: { file: true }
+            })
+            return res.render('index', {
+                logged: true,
+                user: user, 
+                folders: folders,
+                alerts: alerts
+            })
+        }
+
+        return res.render('index', { alerts })
     }
 
     const filesWithUrls = await Promise.all(
