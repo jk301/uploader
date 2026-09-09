@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="register.css">
+        <link rel="stylesheet" href="/register.css">
     </head>
     <body>
         <h1 id="head">File view</h1>
-        <h2>File name: <%= file.name %></h2>
-        <h2>File type: <%= file.mimeType %></h2>
-        <h2>Uploaded at: <%= file.addedAt %></h2>
+        <h1><%= file.name %></h1>
+        <h2>Type: <%= file.mimeType %></h2>
+        <h2>Uploaded: <%= file.addedAt %></h2>
         <a href="/file/download/<%= file.id %>">
             <button>Download</button>
         </a>
