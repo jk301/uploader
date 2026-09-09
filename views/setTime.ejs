@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/register.css">
+    </head>
+    <body>
+        <h1 id="head">Set public share duration</h1>
+        <h3>Folder name : <%= folder.name %></h3>
+        <form action="/folder/share/link" method="post" class="input-form">
+            <input 
+                type="number" 
+                max=20 
+                min=1 
+                name="expTime" 
+                required placeholder="In days ex- 1 here means 1 day (max is 20)"
+            >
+            <input type="hidden" name="folderId" value="<%= folder.id %>">
+            <button type="submit">Submit time</button>
+        </form>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
+    </body>
+</html>

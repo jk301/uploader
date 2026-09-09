@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/register.css">
+        <script>
+            function copyLink() {
+                const input = document.getElementById('shareLink')
+                input.select()
+                navigator.clipboard.writeText(input.value)
+            }
+        </script>
+    </head>
+    <body>
+        <h1 id="head">The public link for </h1>
+        <h3><%= folder.name %></h3>
+        <p>Valid till: <%= expiresAt %></p>
+        <div class="input-form" >
+            <input type="text" id="shareLink" value="<%= shareUrl %>" readonly>
+            <button type="button" onclick="copyLink()">Copy</button>
+        </div>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
+    </body>
+</html>
