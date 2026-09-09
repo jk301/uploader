@@ -27,9 +27,9 @@ const upload = multer({ storage: multer.memoryStorage() })
 indexRouter.get('/', indexController.getMain)
 indexRouter.get('/register', indexController.getRegister)
 indexRouter.get('/login', indexController.getLogin)
-indexRouter.get('/folder', optAuth.optAuth, indexController.getFolder)
 
 // protect route
+indexRouter.get('/folder', optAuth.optAuth, indexController.getFolder)
 indexRouter.get('/upload', optAuth.optAuth , indexController.getUpload)
 indexRouter.get('/rename', optAuth.optAuth , indexController.getFolderRename)
 indexRouter.get('/view/file/:id', optAuth.optAuth, indexController.getFileView)
@@ -46,7 +46,10 @@ indexRouter.post('/folder', optAuth.optAuth, indexController.postFolder)
 indexRouter.post('/folder/delete/:id', optAuth.optAuth, indexController.deleteFolder)
 indexRouter.post('/folder/:id/delete', optAuth.optAuth, indexController.deleteFile)
 
-indexRouter.post('/folder/share', optAuth.optAuth, indexController.postCreateFolderShare)
-indexRouter.get('/share/:token', indexController.getFolderShare) // no optAuth — public
+indexRouter.post('/folder/share', optAuth.optAuth, indexController.getExpiryTime)
+indexRouter.post('/folder/share/link', optAuth.optAuth, indexController.postSetExpiryTime)
+
+// no optAuth — public
+indexRouter.get('/share/:token', indexController.getFolderShare) 
 
 module.exports = indexRouter
