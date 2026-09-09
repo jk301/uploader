@@ -5,6 +5,17 @@
     </head>
     <body>
         <h1 id="head">Upload file</h1>
+
+        <% if (typeof alerts !== 'undefined' && alerts) { %>
+            <div class="alerts-container">
+                <ul>
+                    <% alerts.forEach ( alert  => { %>
+                        <li> <%= alert %> </li>
+                    <% }) %>
+                </ul>
+            </div>
+        <% } %>
+        
         <form action="/upload" method="post" enctype="multipart/form-data" class="input-form">
             <input type="file" name="file" required >
             <input type="hidden" name="folderId" value="<%= folderId %>">

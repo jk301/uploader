@@ -187,6 +187,14 @@ async function postUpload (req, res) {
     const userId = req.user.id
     const folderId = Number(req.body.folderId)
 
+    // Limited to 40MB
+    if (file.size >= 40000000) {
+        return res.render('upload', {
+            folderId: folderId, 
+            alerts: ['Files should be under 40 MB']
+        })
+    }
+
     const folder = await prisma.folder.findUnique({
         where: {id: folderId}
     })
@@ -194,7 +202,8 @@ async function postUpload (req, res) {
     if (!folder || folder.userId !== userId) {
         if (req.user) {
             const folders = await prisma.folder.findMany({
-                where: { userId: userId }
+                where: { userId: userId }, 
+                include: { file: true }
             })
 
             return res.render('index', {
