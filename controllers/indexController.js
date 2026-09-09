@@ -79,7 +79,14 @@ async function getFileView (req, res) {
     const newTime = dayJs(file.addedAt).format('MMM D, YYYY [at] h:mm A')
     file.addedAt = newTime
 
-    return res.render('fileView', { file: file })
+    let size = file.sizeBytes
+    if (size >= 1000000) {
+        size = `${(size / 1000000).toFixed(1)} MB` 
+    } else if (size >= 100000) {
+        size = `${Math.round(size / 1000)} KB`
+    }
+
+    return res.render('fileView', { file: file, size: size })
 }
 
 async function getDownloadUrl (req, res) {

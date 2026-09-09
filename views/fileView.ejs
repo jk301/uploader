@@ -6,8 +6,8 @@
     <body>
         <h1 id="head">File view</h1>
         <h1><%= file.name %></h1>
-        <h2>Type: <%= file.mimeType %></h2>
-        <h2>Uploaded: <%= file.addedAt %></h2>
+        <h3>Size: <%= size %></h3>
+        <h3>Uploaded: <%= file.addedAt %></h3>
         <a href="/file/download/<%= file.id %>">
             <button>Download</button>
         </a>
