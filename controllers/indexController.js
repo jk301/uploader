@@ -180,7 +180,28 @@ async function postUpload (req, res) {
     const userId = req.user.id
     const folderId = Number(req.body.folderId)
 
-    console.log('folderId received:', req.body.folderId, '-> parsed:', folderId)
+    const folder = await prisma.folder.findUnique({
+        where: {id: folderId}
+    })
+
+    if (!folder || folder.userId !== userId) {
+        if (req.user) {
+            const folders = await prisma.folder.findMany({
+                where: { userId: userId }
+            })
+
+            return res.render('index', {
+                logged: true,
+                user: req.user,
+                folders,
+                alerts: ['Create a folder first (naughty)']
+            })
+        }
+        return res.render('index', {
+            alerts: ['Unauthorized!']
+        })
+
+    }
 
     const storagePath = `${userId}/${Date.now()}-${file.originalname}`
 
@@ -247,22 +268,75 @@ async function postFolder (req, res) {
     res.redirect('/')
 }
 
-async function postCreateFolderShare (req, res) {
+async function getExpiryTime (req, res) {
     const folderId = Number(req.body.folderId)
-    const userId = req.user.id
+    const user = req.user
 
     const folder = await prisma.folder.findUnique( { where: { id: folderId} } )
-    if (!folder || folder.userId !== userId) return res.redirect('/')
+
+    if (!folder || folder.userId !== user.id) {
+        const folders = await prisma.folder.findMany({
+            where: { userId: user.id },
+            include: { file: true }
+        })
+
+        return res.render('index', {
+            logged: true,
+            user: user, 
+            folders: folders,
+            alerts: ["Folder does not exist"]
+        })
+    }
+
+    return res.render('setTime', { folder })
+
+}
+
+async function postSetExpiryTime (req, res) {
+    const folderId = Number(req.body.folderId)
+    const expTime = Number(req.body.expTime)
+    const userId = req.user.id
+
+    const folder = await prisma.folder.findUnique({ where: { id: folderId }})
+
+    if (!folder || folder.userId !== userId) {
+        return res.redirect('/')
+    }
 
     const share = await prisma.folderShare.create({
         data: {
             folderId: folderId,
-            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 1) // 1h
+            expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * expTime)
         }
     })
 
-    res.redirect(`/share/${share.id}`)
+    share.expiresAt = dayJs(share.expiresAt).format('MMM D, YYYY [at] h:mm A')
+
+    const fullUrl = `${req.protocol}://${req.get('host')}/share/${share.id}`
+
+    return res.render('linkShare', { 
+        folder, 
+        shareUrl: fullUrl, 
+        expiresAt: share.expiresAt
+    })
 }
+
+// async function postCreateFolderShare (req, res) {
+//     const folderId = Number(req.body.folderId)
+//     const userId = req.user.id
+
+//     const folder = await prisma.folder.findUnique( { where: { id: folderId} } )
+//     if (!folder || folder.userId !== userId) return res.redirect('/')
+
+//     const share = await prisma.folderShare.create({
+//         data: {
+//             folderId: folderId,
+//             expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 1) // 1h
+//         }
+//     })
+
+//     res.redirect(`/share/${share.id}`)
+// }
 
 async function getFolderShare (req, res) {
     const token = req.params.token
@@ -302,8 +376,13 @@ async function getFolderShare (req, res) {
             return { name: file.name, url: data?.signedUrl }
         })
     )
+    share.expiresAt = dayJs(share.expiresAt).format('MMM D, YYYY [at] h:mm A')
 
-    res.render('folderShare', { folderName: share.folder.name, files: filesWithUrls })
+    res.render('folderShare', {
+        folderName: share.folder.name, 
+        files: filesWithUrls, 
+        expires: share.expiresAt 
+    })
 }
 
 async function deleteFolder (req, res) {
@@ -377,7 +456,9 @@ module.exports = {
     getDownloadUrl,
     getFolderRename,
     getFolderShare,
+    getExpiryTime,
 
+    postSetExpiryTime,
     postRegister,
     postLogin,
     postLogout,
@@ -385,6 +466,6 @@ module.exports = {
     postFolder,
     deleteFolder,
     postRenameFolder,
-    postCreateFolderShare,
+    // postCreateFolderShare,
     deleteFile,
 }
