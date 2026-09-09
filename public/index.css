@@ -41,6 +41,21 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
+.shared {
+    width: 40%
+}
+.button-link {
+    display: inline-block;
+    font-family: inherit;
+    padding: 10px 16px;
+    background-color: transparent;
+    border: 1px solid #C9C2B4;
+    color: black;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
 .folder-details {
     display: flex;
     justify-content: space-between;
@@ -125,6 +140,10 @@ body {
 
 .file-button > form >button:hover {
     background-color: #EDE6D8;
+}
+.button-link:hover {
+    color: white;
+    background-color: #8B9A6E;
 }
 #delete-button:hover {
     color: white;
