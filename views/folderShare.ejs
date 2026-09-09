@@ -1,19 +1,30 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <link rel="stylesheet" href="/register.css">
+        <link rel="stylesheet" href="/index.css">
+    </head>
     <body>
-        <div class="folder-view">
-            <h1>Folder name: <%= folderName %></h1>
-            <p>!share the url above</p>
+        <h1 id="head">Shared folder</h1>
+        <h3>Expires : <%= expires %></h3>
+        <div class="folder shared">
+            <div class="folder-details">
+                <h3><%= folderName %></h3>
+            </div> 
             <% if (typeof files !== 'undefined' || files) { %>
                 <% files.forEach( file => { %>
-                    <div>
-                        <h3>File Name: <%= file.name %></h3>
-                        <a href="<%= file.url %>">download</a>
+                    <div class="file-container">
+                        <div class="file">
+                            <%= file.name %>
+                            <a href="<%= file.url %>" class="button-link" >download</a>
+                        </div>
                     </div>
                 <% }) %>
             <% } %>
-            <a href="/">go home</a>
+            
         </div>
+        <a href="/">
+            <button>Go Home</button>
+        </a>
     </body>
 </html>
