@@ -84,6 +84,8 @@ async function getFileView (req, res) {
         size = `${(size / 1000000).toFixed(1)} MB` 
     } else if (size >= 100000) {
         size = `${Math.round(size / 1000)} KB`
+    } else {
+        size = `${size} B`
     }
 
     return res.render('fileView', { file: file, size: size })
